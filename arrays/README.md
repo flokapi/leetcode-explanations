@@ -20,7 +20,7 @@ Creating a set has a time complexity of O(n), because the set uses a hash table.
 
 
 
-<img src="README.assets/image-20250826204434044.png" alt="image-20250826204434044" style="zoom:33%;" />
+<img src="README.assets/image-20250826204434044.png" alt="image-20250826204434044"  />
 
 
 
@@ -42,7 +42,7 @@ Adding an element to a set is O(1), and checking its presence is also O(1).
 
 
 
-<img src="README.assets/image-20250826203516399.png" alt="image-20250826203516399" style="zoom:33%;" />
+<img src="README.assets/image-20250826203516399.png" alt="image-20250826203516399"  />
 
 
 
@@ -70,7 +70,9 @@ Iterate on the list to check for equal consecutive values.
 
 
 
-<img src="README.assets/image-20250826203652002.png" alt="image-20250826203652002" style="zoom:33%;" />
+<img src="README.assets/image-20250826203652002.png" alt="image-20250826203652002"  />
+
+
 
 Sorting algorithm:
 
@@ -113,7 +115,7 @@ The difference between the expected sum (0, 1, ... n) and the actual sum is the 
 
 
 
-<img src="README.assets/image-20250827001106683.png" alt="image-20250827001106683" style="zoom:33%;" />
+<img src="README.assets/image-20250827001106683.png" alt="image-20250827001106683"  />
 
 
 
@@ -131,7 +133,7 @@ Time: O(n) - Space: O(n)
 
 Once the given numbers are sorted, iterate on the `n` first expected values and if there is a mismatch, return the expected value.
 
-<img src="README.assets/image-20250826205821271.png" alt="image-20250826205821271" style="zoom:33%;" />
+<img src="README.assets/image-20250826205821271.png" alt="image-20250826205821271"  />
 
 
 
@@ -139,7 +141,7 @@ If there was no mismatch, then the missing value is the last one, and return `n`
 
 
 
-<img src="README.assets/image-20250826210208698.png" alt="image-20250826210208698" style="zoom:33%;" />
+<img src="README.assets/image-20250826210208698.png" alt="image-20250826210208698"  />
 
 
 
@@ -217,7 +219,7 @@ Since all numbers are strictly positive, we can change the sign of the number to
 
 
 
-<img src="README.assets/image-20250826213456340.png" alt="image-20250826213456340" style="zoom:33%;" />
+<img src="README.assets/image-20250826213456340.png" alt="image-20250826213456340"  />
 
 
 
@@ -225,7 +227,7 @@ Then, return the corresponding numbers at the index which still have a positive 
 
 
 
-<img src="README.assets/image-20250826213520854.png" alt="image-20250826213520854" style="zoom:33%;" />
+<img src="README.assets/image-20250826213520854.png" alt="image-20250826213520854"  />
 
 
 
@@ -305,7 +307,7 @@ Using a dictionary also enables to look up the values with O(1) time complexity.
 
 
 
-<img src="README.assets/image-20250826231050064.png" alt="image-20250826231050064" style="zoom:33%;" />
+<img src="README.assets/image-20250826231050064.png" alt="image-20250826231050064"  />
 
 
 
@@ -393,7 +395,7 @@ By sorting the list in the ascending order, the index of the first occurrence of
 
 
 
-<img src="README.assets/image-20250827124545908.png" alt="image-20250827124545908" style="zoom:33%;" />
+<img src="README.assets/image-20250827124545908.png" alt="image-20250827124545908"  />
 
 
 
@@ -428,7 +430,7 @@ Then we compute the cumulative sum of the previous number count. Finally we can 
 
 
 
-<img src="README.assets/image-20250827131719140.png" alt="image-20250827131719140" style="zoom:33%;" />
+<img src="README.assets/image-20250827131719140.png" alt="image-20250827131719140"  />
 
 
 
