@@ -426,7 +426,7 @@ Since the numbers are relatively small (not higher than 100), we can use DP to c
 
 Because the occurrence of a number only matters for numbers higher than the current number, we save the occurrence of the number `i` at index `i + 1`.
 
-Then we compute the cumulative sum of the previous number count. Finally we can retrieve the values for then given numbers to build the result list.
+Then we compute the cumulative sum of the previous number count. Finally we can retrieve the values for the given numbers to build the result list.
 
 
 
