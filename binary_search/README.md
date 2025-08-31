@@ -88,7 +88,7 @@ You are given an API `bool isBadVersion(version)` which returns whether `version
 
 
 
-### Approach 1: 
+### Approach 1: Reducing the search interval to a single value
 
 If the middle value `V` is `False`, the version is good and all previous versions including `V` can be excluded from the search interval.
 
