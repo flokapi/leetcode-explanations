@@ -137,7 +137,7 @@ Given an array of positive integers `nums` and a positive integer `target`, retu
 
 
 
-### Approach 1: Variable sized sliding window with while loop
+### Approach 1: Variable sized sliding window with single loop
 
 Use two pointers for the left and right side of the interval.
 
@@ -174,7 +174,7 @@ Time: O(n) - Space: O(1)
 
 
 
-### Approach 2: Variable sized sliding window with for loop
+### Approach 2: Variable sized sliding window with nested loops
 
 The sum is updated at the beginning of each iteration, therefore there is no risk of a pointer overflow.
 
