@@ -2,12 +2,13 @@
 
 Dynamic programming is usually used for problems which include an explosion of possibilities to consider. DP algorithms usually trade complexity for memory.
 
-The main idea is:
+The main idea is to cut the problem into smaller or more simple problems, then the results are saved, and then reused to find a solution efficiently.
 
-- to cut the problem into smaller problems down to the trivial case.
-- then to solve the problem bottom up, deducing the properties of the larger system from the smaller one.
+The results might be saved using:
 
-Dynamic programming problems can often also be solved using Depth First Search algorithms. This is usually done first by defining a tree of states used for the problem resolution. The explosion of possibilities can be avoided with a mapping which enables reusing the already computed values for each state.
+- an array or a grid
+- a mapping
+- a bit-mask
 
 
 
@@ -170,11 +171,14 @@ Time: O(coin_count * amount²) - Space: O(amount)
 
 
 
-### Approach 4: Breath First Search using a bitmask
+### Approach 4: Breath First Search using a bit-mask
 
-It works like the previous approach, but we can use a single number to represent all reached values using the bitmask technique.
+It works like the previous approach, but we can use a single number to represent all reached values using the bit-mask technique. By doing so, we can manipulate multiple bits in a single operation.
 
-By doing so, we can manipulate multiple bits in a single operation, making this solution very fast.
+This solution offers an excellent performance:
+
+- it is very fast. If there is a `coin_count` solution, it will find the solution in only `coin_count` iterations. Although, the worst case time complexity is still O(coin_count * amount)
+- it uses constant memory.
 
 If there is a way to reach the amount, it has to be done in `amount + 1` iterations. Otherwise we return `-1`.
 
@@ -192,4 +196,4 @@ class Solution:
         return -1
 ```
 
-Time: O(coin_count * amount)
+Time: O(coin_count * amount) - Space: O(1)
