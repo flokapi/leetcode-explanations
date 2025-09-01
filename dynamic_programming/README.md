@@ -171,7 +171,7 @@ Time: O(coin_count * amount²) - Space: O(amount)
 
 
 
-### Approach 4: Breath First Search using a bit-mask
+### Approach 5: Breath First Search using a bit-mask
 
 It works like the previous approach, but we can use a single number to represent all reached values using the bit-mask technique. By doing so, we can manipulate multiple bits in a single operation.
 
