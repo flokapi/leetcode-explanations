@@ -12,6 +12,113 @@ The results might be saved using:
 
 
 
+## 70. Climbing stairs
+
+You are climbing a staircase. It takes `n` steps to reach the top.
+
+Each time you can either climb `1` or `2` steps. In how many distinct ways can you climb to the top?
+
+ 
+
+**Example:**
+
+- Input: `n = 2`
+- Output: `2`
+
+
+
+### Approach 1: DP with mapping
+
+If there is one step, there is only one way of climbing the stairs.
+
+If there are two steps, we can either do two single steps, or one double. So there are two ways.
+
+If there are three steps, we can start with either:
+
+- a single step, after which the number of combinations will be `V(2)`.
+- a double step, after which the number of combinations will be `V(1)`.
+
+Therefore, we can note that `V(3) = V(2) + V(2)`, and generalize that `V(n) = V(n-1) + V(n-2)`
+
+
+
+![70_1](README.assets/70_1_.png)
+
+
+
+/!\: We could also have used `V(0) = 1`, `V(1) = 1` and `V(n) = V(n-1) + V(n-2)`.
+
+
+
+We should notice that the recursive approach is inefficient by default, because the same value is computed multiple times. For example: `V(4) = V(3) + V(2) = V(2) + V(1) + V(2)`.
+
+This can be fixed by using a mapping and reusing the already computed values.
+
+```python
+class SolutionRecMemo:
+    def climbStairs(self, n: int, memo={}) -> int:
+        if n in memo:
+            return memo[n]
+        if n <= 2:
+            return n
+        
+        memo[n] = self.climbStairs(n - 1) + self.climbStairs(n - 2)
+        return memo[n]
+```
+
+Time: O(n) - Space: O(n)
+
+
+
+### Approach 2: DP with array
+
+We can also use an array to compute the values iteratively.
+
+
+
+![70_2](README.assets/70_2_.png)
+
+
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+
+        buf = [0] * n
+        buf[0] = 1
+        buf[1] = 2
+
+        for i in range(2, n):
+            buf[i] = buf[i - 2] + buf[i - 1]
+
+        return buf[n - 1]
+```
+
+Time: O(n) - Space: O(n)
+
+
+
+### Approach 2: Fibonacci sequence
+
+Or we can compute the value with constant space.
+
+It helps to recognize that we are actually using the Fibonacci sequence.
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        a, b = 0, 1
+        for _ in range(n + 1):
+            a, b = b, a + b
+        return a
+```
+
+Time: O(n) - Space: O(1)
+
+
+
 ## 322. Coin change
 
 You are given an integer array `coins` representing coins of different denominations and an integer `amount` representing a total amount of money.
@@ -147,24 +254,27 @@ class Solution:
     def coinChange(self, coins: list[int], amount: int) -> int:
         dp = [True] + [False] * amount
         count = 0
-        updated = True
 
-        while updated:
+        def bfs() -> bool:
+            updated = False
+            for val in range(amount, -1, -1):
+                if not dp[val]:
+                    continue
+                for coin in coins:
+                    if val + coin > amount or dp[val + coin]:
+                        continue
+                    dp[val + coin] = True
+                    updated = True
+            return updated
+
+        while True:
             if dp[amount]:
                 return count
 
-            updated = False
             count += 1
 
-            for val in range(amount, -1, -1):
-                if dp[val]:
-                    for coin in coins:
-                        if val + coin > amount or dp[val + coin]:
-                            continue
-                        dp[val + coin] = True
-                        updated = True
-
-        return -1
+            if not bfs():
+                return -1
 ```
 
 Time: O(coin_count * amount²) - Space: O(amount)
@@ -197,3 +307,4 @@ class Solution:
 ```
 
 Time: O(coin_count * amount) - Space: O(1)
+
