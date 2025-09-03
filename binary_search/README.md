@@ -27,7 +27,7 @@ You must write an algorithm with `O(log n)` runtime complexity.
 
 
 
-### Approach 1: Search exact value, or exclude segment until pointers cross
+### Approach 1: Check if exact value, otherwise exclude segment until pointers cross
 
 If the middle pointer `M ` matches the value, we return the index `M`.
 
@@ -286,7 +286,7 @@ Time: O(n) - Space: O(1)
 
 ### Approach 2: Exclude segments until the pointers cross
 
-This approach is a bit shorter than the previous one, but less intuitive.
+This approach is more concise than the previous one, but less intuitive.
 
 If the middle value is greater or equal than the target, instead of doing `R = M`,  we decide to do `R = M - 1`, which means that the result will be within `[L, R+1]`. 
 
@@ -299,7 +299,7 @@ We perform this because:
 
 
 
-If we end by crossing `R` over `L`, the result will be `L`.
+If we end by crossing R over L, the result will be L.
 
 
 

@@ -46,7 +46,7 @@ Therefore, we can note that `V(3) = V(2) + V(2)`, and generalize that `V(n) = V(
 
 
 
-/!\: We could also have used `V(0) = 1`, `V(1) = 1` and `V(n) = V(n-1) + V(n-2)`.
+**Note**: We could also have used `V(0) = 1`, `V(1) = 1` and `V(n) = V(n-1) + V(n-2)`.
 
 
 
@@ -55,7 +55,7 @@ We should notice that the recursive approach is inefficient by default, because 
 This can be fixed by using a mapping and reusing the already computed values.
 
 ```python
-class SolutionRecMemo:
+class Solution:
     def climbStairs(self, n: int, memo={}) -> int:
         if n in memo:
             return memo[n]
@@ -100,7 +100,7 @@ Time: O(n) - Space: O(n)
 
 
 
-### Approach 2: Fibonacci sequence
+### Approach 3: Fibonacci sequence
 
 Or we can compute the value with constant space.
 
@@ -149,7 +149,7 @@ While iterating on all values from zero till the target amount:
 
 By doing so, we effectively reduce the problem size by one at each step, until we reach the amount cell, which contains the result.
 
-If the amount couldn't be reached, the value of it's cell will remain to `-1`.
+If the amount couldn't be reached, the value of its cell will remain  `-1`.
 
 
 
