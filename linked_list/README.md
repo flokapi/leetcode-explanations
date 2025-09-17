@@ -111,7 +111,7 @@ Time: O(n) - Space: O(n)
 
 Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
 
-Example:
+**Example:**
 
 - Input: `head = [1,1,2,2]`
 - Output: `[1,2]`
@@ -169,7 +169,7 @@ It works because we can also decide to leave out the second element in a pair of
 
 
 ````python
-class Solution1b:
+class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
         cur = head
         while cur and cur.next:
@@ -179,6 +179,76 @@ class Solution1b:
                 cur = cur.next
         return head
 ````
+
+Time: O(n)
+
+Space: O(1)
+
+
+
+## 61. Rotate list
+
+Given the `head` of a linked list, rotate the list to the right by `k` places.
+
+**Example:**
+
+- Input: `head = [1,2,3,4,5]`, ` k = 2`
+- Output: `[4,5,1,2,3]`
+
+
+
+### Approach 1: Find list length, compute shift numbers & rearrange
+
+If the number of shifts `k` is greater than the length of the list, we don't want the list to perform unnecessary rotations. Any number of shifts which is a multiple of the list length `n` will bring the list to the same state. Therefore, we only need to perform `k % n` shifts.
+
+To achieve this, we first explore the list once to find its length and the last element.
+
+Once the number of shifts is computed:
+
+- if the value is zero, we don't need perform any modification and can return the list as it is.
+- otherwise we find the node before th cut. Finally, with the references to the `head`, `pre_cut` and `last`, we can rearrange the list an return its new head.
+
+
+
+![61_1](README.assets/61_1_.png)
+
+
+
+```python
+class Solution:
+    def _find_last(self, head: ListNode) -> tuple[int, ListNode]:
+        curr, i = head, 1
+        while curr.next:
+            curr = curr.next
+            i += 1
+
+        return i, curr
+
+    def _find(self, head: ListNode, pos: int) -> ListNode:
+        curr = head
+        for _ in range(pos):
+            curr = curr.next
+        return curr
+
+    def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head:
+            return head
+
+        n, last = self._find_last(head)
+
+        shifts = k % n
+
+        if shifts == 0:
+            return head
+
+        pre_cut = self._find(head, n - shifts - 1)
+
+        new_head = pre_cut.next
+        last.next = head
+        pre_cut.next = None
+
+        return new_head
+```
 
 Time: O(n)
 
