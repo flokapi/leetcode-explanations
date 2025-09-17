@@ -15,7 +15,7 @@ Return `true` *if there is a cycle in the linked list*. Otherwise, return `false
 
 If we select any given node, we can try to find out whether there is a cycle by moving a pointer until we either reach the end of the list or come back to the selected node, but there might also be a cycle after the selected node, which will result in an infinite loop.
 
-The infinite loop issue can be resolved by using a slow and a fast pointer. The slow pointer makes a move of one node at each iteration while the fast pointer makes a move of two. If there is any cycle in the list, both the slow and fast pointers will end up within it. At this point, the fast pointer, moving twice as fast as the slow one, will inevitably come back to the same value as the slow one. We can detect this equality to determine there is a cycle. If the fast pointers reaches the end of the list, it means that there is no cycle.
+The infinite loop issue can be resolved by using a slow and a fast pointer. The slow pointer makes a move of one node at each iteration while the fast pointer makes a move of two. If there is any cycle in the list, both the slow and fast pointers will end up within it. At this point, the fast pointer, moving twice as fast as the slow one, will inevitably come back to the same node as the slow one. We can detect this equality to determine there is a cycle. If the fast pointers reaches the end of the list, it means that there is no cycle.
 
 The time complexity is O(n), because it takes at most n iterations for the slow pointer to get in the cycle, and also at most n iterations for the fast pointer to join the slow pointer. 
 
@@ -104,3 +104,82 @@ class Solution:
 ```
 
 Time: O(n) - Space: O(n)
+
+
+
+## 83. Remove duplicates from sorted list
+
+Given the `head` of a sorted linked list, *delete all duplicates such that each element appears only once*. Return *the linked list **sorted** as well*.
+
+Example:
+
+- Input: `head = [1,1,2,2]`
+- Output: `[1,2]`
+
+
+
+### Approach 1: Modify the current list in place
+
+As long as there are two consecutive elements that haven't been checked in the list, there might be a duplicate.
+
+If the consecutive elements:
+
+- have the same value, connect directly with the second one to leave out the first.
+- have different values, we don't need to leave out the first element and we can just move the current pointer to the next one.
+
+We are done when the second element reaches the end of the list.
+
+
+
+![83_1](README.assets/83_1_.png)
+
+
+
+````python
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre_head = ListNode(0, head)
+
+        pre_curr = pre_head
+        while pre_curr.next and pre_curr.next.next:
+            if pre_curr.next.val == pre_curr.next.next.val:
+                pre_curr.next = pre_curr.next.next
+            else:
+                pre_curr = pre_curr.next
+
+        return pre_head.next
+````
+
+Time: O(n)
+
+Space: O(1)
+
+
+
+### Approach 2: Modify the list in place without pre_head
+
+Similar to the previous approach, but more concise because not `pre_head` pointer is needed.
+
+It works because we can also decide to leave out the second element in a pair of duplicate nodes. Therefore, we don't need to reference to the node before the current one.
+
+
+
+![83_2](README.assets/83_2_.png)
+
+
+
+````python
+class Solution1b:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        cur = head
+        while cur and cur.next:
+            if cur.val == cur.next.val:
+                cur.next = cur.next.next
+            else:
+                cur = cur.next
+        return head
+````
+
+Time: O(n)
+
+Space: O(1)
