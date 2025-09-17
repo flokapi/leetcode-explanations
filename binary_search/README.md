@@ -335,3 +335,109 @@ class Solution:
 ```
 
 Time: O(n) - Space: O(1)
+
+
+
+
+
+## 69. Sqrt(x)
+
+Given a non-negative integer `x`, return *the square root of* `x` *rounded down to the nearest integer*. The returned integer should be **non-negative** as well.
+
+You **must not use** any built-in exponent function or operator.
+
+ 
+
+**Example:**
+
+- Input: `x = 8`
+- Output: `2`
+- Explanation: The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.
+
+
+
+### Approach 1: Reduce the interval to a single value
+
+If we look at the graph of th square root function, what we would to do it to evaluate the function at `x = 8`,  and round down the `y` value to the lowest integer.
+
+We can find the same result by looking the for the smallest `y` value which corresponding value is equal or greater than the target `x`.
+
+
+
+![69_1_1](README.assets/69_1_1_.png)
+
+
+
+To achieve that, we can use the *square* function which is much easier to compute than *square root*.
+
+
+
+![69_1_2](README.assets/69_1_2_.png)
+
+
+
+Because the square root function is strictly increasing, we can use a binary search algorithm to find the result efficiently:
+
+- if the current square is larger than the `x` value, we can exclude it and everything to the right.
+- if the current square is smaller or equal than the `x` value, we can exclude everything to the left, but not the value itself.
+
+
+
+![69_1_3](README.assets/69_1_3_.png)
+
+
+
+```python
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        l, r = 0, x
+
+        while l < r:
+            mid = (l + r + 1) // 2
+            if mid * mid <= x:
+                l = mid
+            else:
+                r = mid - 1
+
+        return l
+```
+
+Time: O(log(n))
+
+Space: O(1)
+
+
+
+### Approach 2: Exclude intervals until the pointers cross
+
+If we are lower or equal than the target, the result might be `M`, but temporarily exclude `M` and everything to the left.
+
+If we are higher than the target, the result cannot be `M` nor anything to the right, exclude these values.
+
+If `L` and `R` point to the same value and:
+
+- we are lower or equal than the target: `L` will be shifted to the right, which makes pointers cross and we can return `R`.
+- we are higher than the target: `R` will be shifted to the left, which makes pointers cross and we can return `R`.
+
+![69_2](README.assets/69_2_.png)
+
+
+
+```python
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        l, r = 0, x
+
+        while l <= r:
+            mid = (l + r) // 2
+            if mid * mid <= x:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return r
+```
+
+Time: O(log(n))
+
+Space: O(1)
