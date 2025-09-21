@@ -387,6 +387,10 @@ Because the square root function is strictly increasing, we can use a binary sea
 
 
 
+/!\ Because we use shift the `L` pointer to `M` and not above it, it might happen that we get stuck if `M` and `R` are next to each other. To avoid this, we use `M == (L + R + 1) // 2`.  The `+1` will ensure that the algorithm will converge.
+
+
+
 ```python
 class Solution:
     def mySqrt(self, x: int) -> int:
