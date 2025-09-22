@@ -17,7 +17,7 @@ Can you solve it without sorting?
 
 
 
-## Approach 1: Pop k greatest values in max heap
+### Approach 1: Pop k greatest values in max heap
 
 Create a max heap, by negating all values.
 
@@ -108,11 +108,11 @@ print(tm.execTop())
 
 ### Approach 1: Using a heap and lazy deletion with a valid_tasks dictionary
 
-A list is a an idea to produce a stack of tasks. But since we want to arbitrarily edit the tasks, editing the list isn't efficient.
+A list is a an idea to produce a stack of tasks, but it is not efficient since we want to add tasks at arbitrary positions within the order.
 
 Using a heap allows to keep track of the task order while adding new tasks with a time complexity of O(log(n)).
 
-The issue is that a heap is not efficient to edit or remove an element. We can solve this with "lazy deletion", by using an additional dictionary to keep track of the valid elements. If an element in the heap does not point back to itself through the `valid_task`, then it has been deleted and we should try the next one.
+The issue is that a heap is not efficient to edit or remove an element. We can solve this with "lazy deletion", by using an additional dictionary to keep track of the valid elements. If an element in the heap does not point back to itself through the `valid_task` dictionary, then it has been deleted and we should try the next one.
 
 
 
@@ -145,16 +145,12 @@ class TaskManager:
 
     def execTop(self):
         while self.task_heap:
-            priority, taskId, userId = heapq.heappop(self.task_heap)
+            task = heapq.heappop(self.task_heap)
+            _, taskId, userId = task
 
-            if taskId not in self.valid_tasks:
-                continue
-
-            if self.valid_tasks[taskId][0] != priority:
-                continue
-
-            del self.valid_tasks[taskId]
-            return userId
+            if self.valid_tasks.get(taskId) is task:
+                del self.valid_tasks[taskId]
+                return userId
 
         return -1
 ```
@@ -162,57 +158,3 @@ class TaskManager:
 Time: O(n log(n))
 
 Space: O(n)
-
-
-
-### Approach 2: Using a heap and lazy deletion using a separate priority record
-
-By keeping another record of the task priority using a dictionary, we can detect whether a task has been deleted:
-
-- when editing a task, the old version of the task will not match the one from the dictionary
-- when deleting a task we remove it from the dictionary
-
-
-
-![3408_2](README.assets/3408_2_.png)
-
-
-
-```python
-class TaskManager:
-    def __init__(self, tasks):
-        self.heap = []
-        self.taskPriority = {}
-        self.taskUser = {}
-
-        for t in tasks:
-            self.add(*t)
-
-    def add(self, userId, taskId, priority):
-        heapq.heappush(self.heap, (-priority, -taskId))
-        self.taskPriority[taskId] = priority
-        self.taskUser[taskId] = userId
-
-    def edit(self, taskId, newPriority):
-        heapq.heappush(self.heap, (-newPriority, -taskId))
-        self.taskPriority[taskId] = newPriority
-
-    def rmv(self, taskId):
-        del self.taskPriority[taskId]
-
-    def execTop(self):
-        while self.heap:
-            neg_prio, neg_task = heapq.heappop(self.heap)
-            prio, task = -neg_prio, -neg_task
-            if self.taskPriority.get(task) == prio:
-                user = self.taskUser[task]
-                del self.taskUser[task]
-                del self.taskPriority[task]
-                return user
-        return -1
-```
-
-Time: O(n log(n))
-
-Space: O(n)
-
