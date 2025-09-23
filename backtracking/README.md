@@ -52,6 +52,7 @@ class Solution:
 ```
 
 Time: O(n!)
+
 Space: O(n^2) *- excluding the result*
 
 
@@ -89,6 +90,7 @@ class Solution:
 ```
 
 Time: O(n!)
+
 Space: O(1) *- excluding the result*
 
 
@@ -212,7 +214,7 @@ Instead of keeping track of the current sum, we can decrease the current target 
 
 The first number can be picked among any values. To avoid creating duplicate results, we ensure that every subsequent number picked will be either the same number or any number to the right. This is why we pass the index of the last picked number in the `backtrack` function.
 
-There are at most 2^n paths that we can produce. Therefore the time complexity is O(n).
+There are at most 2^n paths that we can produce. Therefore the time complexity is O(2^n).
 
 ```python
 class Solution:
@@ -320,24 +322,25 @@ For example in the example below, we want to evaluate to possibility containing 
 class Solution:
     def combinationSum2(self, candidates: list[int], target: int) -> list[list[int]]:
         candidates.sort()
-        n = len(candidates)
         res = []
 
-        def backtrack(start: int, path: list[int], target: int):
-            if target < 0:
-                return
-
+        def backtrack(start: int, target: int, path: list[int]):
             if target == 0:
-                res.append(path)
+                res.append(path.copy())
                 return
 
-            for i in range(start, n):
+            for i in range(start, len(candidates)):
                 if i > start and candidates[i] == candidates[i - 1]:
                     continue
-                val = candidates[i]
-                backtrack(i + 1, path + [val], target - val)
 
-        backtrack(0, None, [], target)
+                if candidates[i] > target:
+                    break
+
+                path.append(candidates[i])
+                backtrack(i + 1, target - candidates[i], path)
+                path.pop()
+
+        backtrack(0, target, [])
         return res
 ```
 

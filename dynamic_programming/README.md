@@ -66,7 +66,9 @@ class Solution:
         return memo[n]
 ```
 
-Time: O(n) - Space: O(n)
+Time: O(n)
+
+Space: O(n)
 
 
 
@@ -96,7 +98,9 @@ class Solution:
         return buf[n - 1]
 ```
 
-Time: O(n) - Space: O(n)
+Time: O(n) 
+
+Space: O(n)
 
 
 
@@ -115,7 +119,9 @@ class Solution:
         return a
 ```
 
-Time: O(n) - Space: O(1)
+Time: O(n) 
+
+Space: O(1)
 
 
 
@@ -176,7 +182,9 @@ class Solution:
         return coin_count[-1]
 ```
 
-Time: O(coin_count * amount) - Space: O(amount)
+Time: O(coin_count * amount) 
+
+Space: O(amount)
 
 
 
@@ -202,7 +210,9 @@ class Solution:
         return dp[amount] if dp[amount] != float("inf") else -1
 ```
 
-Time: O(coin_count * amount) - Space: O(amount)
+Time: O(coin_count * amount) 
+
+Space: O(amount)
 
 
 
@@ -229,7 +239,9 @@ class Solution:
         return dp[amount] if dp[amount] != float("inf") else -1
 ```
 
-Time: O(coin_count * amount) - Space: O(amount)
+Time: O(coin_count * amount) 
+
+Space: O(amount)
 
 
 
@@ -277,7 +289,9 @@ class Solution:
                 return -1
 ```
 
-Time: O(coin_count * amount²) - Space: O(amount)
+Time: O(coin_count * amount²) 
+
+Space: O(amount)
 
 
 
@@ -306,5 +320,7 @@ class Solution:
         return -1
 ```
 
-Time: O(coin_count * amount) - Space: O(1)
+Time: O(coin_count * amount) 
+
+Space: O(1)
 
