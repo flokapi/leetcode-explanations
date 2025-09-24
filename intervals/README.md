@@ -73,14 +73,14 @@ Given an array of `intervals` where `intervals[i] = [start_i, end_i]`, merge all
 
 
 
-### Approach 1: Sort intervals by start position, then update current interval
+### Approach 1: Sort intervals by start position, then update current intervals
 
-Sorting the intervals by start value make is easier, because we will already know that each subsequent interval starts later.
+Sorting the intervals by start value make is easier, because we will already know that each subsequent interval starts after.
 
 Another good practice is to a define the current interval and to update this interval if appropriate when iterating on the subsequent intervals:
 
 - if the next interval starts before the end of the current interval, then we can merge the intervals.
-  - the start of the current interval won't change, because the next interval starts later
+  - the start of the current interval won't change, because the next interval starts after
   - however, the end is the greatest value between the current and the next interval
 - if there is no overlap, add the current interval to the result, and set the next interval as the current one.
 

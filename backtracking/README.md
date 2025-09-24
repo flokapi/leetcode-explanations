@@ -253,22 +253,22 @@ class Solution:
     def combinationSum(self, candidates: list[int], target: int) -> list[list[int]]:
         res = []
 
-        def make_combination(idx, comb, total):
+        def backtrack(index: int, path: list[int], total: int):
             if total == target:
-                res.append(comb[:])
+                res.append(path.copy())
                 return
-            
-            if total > target or idx >= len(candidates):
+
+            if total > target or index >= len(candidates):
                 return
-            
-            comb.append(candidates[idx])
-            make_combination(idx, comb, total + candidates[idx])
-            comb.pop()
-            make_combination(idx+1, comb, total)
+
+            path.append(candidates[index])
+            backtrack(index, path, total + candidates[index])
+            path.pop()
+            backtrack(index + 1, path, total)
 
             return res
 
-        return make_combination(0, [], 0)
+        return backtrack(0, [], 0)
 ```
 
 Time: O(2^n)
