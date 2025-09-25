@@ -196,7 +196,7 @@ Evaluate the expression. Return *an integer that represents the value of the exp
 
 
 
-### Approach 1: Using a stack bottom up
+### Approach 1:  Using a stack - bottom up
 
 We can iterate on the tokens and add the numbers to a stack. When we find an operation token,  the two last values can be used to perform the operation and place the intermediary result back on the stack.
 
@@ -235,7 +235,7 @@ Space: O(n)
 
 
 
-### Approach 2: Using recursivity top down
+### Approach 2: Using recursivity - top down
 
 We can also handle the given tokens as a stack and evaluate the expression top down using recursivity.
 

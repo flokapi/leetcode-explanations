@@ -324,3 +324,145 @@ Time: O(coin_count * amount)
 
 Space: O(1)
 
+
+
+## 338. Counting bits
+
+Given an integer `n`, return *an array* `ans` *of length* `n + 1` *such that for each* `i` (`0 <= i <= n`)*,* `ans[i]` *is the **number of*** `1`***'s** in the binary representation of* `i`.
+
+
+
+**Example:**
+
+- Input: `n = 5`
+
+- Output: `[0,1,1,2,1,2]`
+
+- Explanation:
+
+  ```
+  0 --> 0
+  1 --> 1
+  2 --> 10
+  3 --> 11
+  4 --> 100
+  5 --> 101
+  ```
+
+  
+
+
+
+### Approach 1: Count the number of ones for each number
+
+This solution is trivial. However, the time complexity to count the ones depends on the number length, which increases logarithmically.
+
+```python
+class Solution:
+    def countBits(self, n: int) -> list[int]:
+		return [i.bit_count() for i in range(n + 1)]
+```
+
+Time: O(n log n)
+
+Space: O(n)
+
+
+
+### Approach 2: Deduce the number of ones using previous values
+
+First of all, we can notice that powers of two contain a single `1`.
+
+We can also see that there are patterns in the values, for example:
+
+- the values of the interval `2->3` are the same as `0->1`, except being added by one because of the bit in the second position.
+- the values of the interval `4->7` are the same as `0->3`, except being added by one because of the bit in the third position.
+
+In other words, the number of ones for any value can be calculated in constant time using previously computed values.
+
+`C(v) = 1 + C(v - last_power_of_two) `
+
+For example with `7`, the last power of two (or most significant bit value) is `2^3 = 4`. Therefore `C(7) = 1 + C(3)`.
+
+
+
+![338_2](README.assets/338_2_.png)
+
+
+
+```python
+class Solution:
+    def countBits(self, n: int) -> list[int]:
+        dp = [0] * (n + 1)
+
+        msb_val = 1
+        for i in range(1, n + 1):
+            if i == msb_val * 2:
+                msb_val = i
+            dp[i] = 1 + dp[i - msb_val]
+
+        return dp
+```
+
+Time: O(n)
+
+Space: O(n)
+
+
+
+## 64. Minimum path sum
+
+Given a `m x n` `grid` filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+**Note:** You can only move either down or right at any point in time.
+
+
+
+**Example:**
+
+- Input: `grid = [[1,3,1],[1,5,1],[4,2,1]]`
+- Output: `7`
+
+
+
+### Approach 1: Compute the top and left sides, then the intermediate values depending on their neighbors.
+
+Since we can only move down or right at any point in time, there is only one possible path to reach cells in the top row and left column:
+
+- top row: we can reach any cell on the top row only by moving right from the initial cell. 
+- left column: we can reach any cell of the left column by moving down from the initial cell.
+
+Therefore we can compute the path sum for these cells simply by adding the previous value.
+
+Once the top row and left column are filled, the value of any cell can be computed by adding the minimum between its top and left neighbor. This way, we can save the intermediary result of the minimum path without having to recompute it each time we consider walking through a cell.
+
+This can be repeated until the grid is fully computed. By definition, the bottom right cell of the grid contains the minimum path sum to reach it.
+
+
+
+![64_1](README.assets/64_1_.png)
+
+
+
+```python
+class Solution:
+    def minPathSum(self, grid: list[list[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+
+        for i in range(1, m):
+            grid[i][0] += grid[i - 1][0]
+
+        for j in range(1, n):
+            grid[0][j] += grid[0][j - 1]
+
+        for i in range(1, m):
+            for j in range(1, n):
+                grid[i][j] += min(grid[i][j - 1], grid[i - 1][j])
+
+        return grid[-1][-1]
+```
+
+Time: O(n)
+
+Space: O(1) - *Excluding the given grid*
