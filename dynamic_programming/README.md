@@ -369,7 +369,7 @@ Space: O(n)
 
 
 
-### Approach 2: Deduce the number of ones using previous values
+### Approach 2: Deduce the number from a previous one using the last power of two
 
 First of all, we can notice that powers of two contain a single `1`.
 
@@ -378,7 +378,7 @@ We can also see that there are patterns in the values, for example:
 - the values of the interval `2->3` are the same as `0->1`, except being added by one because of the bit in the second position.
 - the values of the interval `4->7` are the same as `0->3`, except being added by one because of the bit in the third position.
 
-In other words, the number of ones for any value can be calculated in constant time using previously computed values.
+In other words, the number of `1` for any value can be calculated in constant time using previously computed values.
 
 `C(v) = 1 + C(v - last_power_of_two) `
 
@@ -410,6 +410,42 @@ Space: O(n)
 
 
 
+### Approach 3: Deduce the number from a previous one by removing changed bits
+
+The idea here is to compute a "base" number by removing from the current number the bits that changed compared to its predecessor. We can get this by applying a bitwise AND.
+
+The number we get from this operation has the following properties:
+
+- it is always smaller than the current number, because all we do is remove `1`s in its binary representation.
+- it contains always one `1` less than the current number. Indeed:
+  - either we changed a `0` to a `1`, which means that only one bit changed and therefore the number of `1`s in the current number is one more than in the "base" number.
+  - or we changed one or more `1` into a `0`, ad added a new `1` on the left. Here also, the result for the current number is one more than the "base" number.
+
+Therefore, we can apply the following formula: `C(i) = C(i & (i-1)) `. Which is implemented by reusing the already precomputed values to find the result in constant time.
+
+
+
+![338_3](README.assets/338_3_.png)
+
+
+
+```python
+class Solution:
+    def countBits(self, n: int) -> list[int]:
+        dp = [0] * (n + 1)
+
+        for i in range(1, n + 1):
+            dp[i] = 1 + dp[i & (i - 1)]
+
+        return dp
+```
+
+Time: O(n)
+
+Space: O(n)
+
+
+
 ## 64. Minimum path sum
 
 Given a `m x n` `grid` filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
@@ -425,12 +461,12 @@ Given a `m x n` `grid` filled with non-negative numbers, find a path from top le
 
 
 
-### Approach 1: Compute the top and left sides, then the intermediate values depending on their neighbors.
+### Approach 1: Compute the top and left sides, then the intermediate values depending on their neighbors
 
 Since we can only move down or right at any point in time, there is only one possible path to reach cells in the top row and left column:
 
-- top row: we can reach any cell on the top row only by moving right from the initial cell. 
-- left column: we can reach any cell of the left column by moving down from the initial cell.
+- top row: we can reach any cell in the top row only by moving right from the initial cell. 
+- left column: we can reach any cell in the left column by moving down from the initial cell.
 
 Therefore we can compute the path sum for these cells simply by adding the previous value.
 
@@ -466,3 +502,97 @@ class Solution:
 Time: O(n)
 
 Space: O(1) - *Excluding the given grid*
+
+
+
+## 120. Triangle
+
+Given a `triangle` array, return *the minimum path sum from top to bottom*.
+
+For each step, you may move to an adjacent number of the row below. More formally, if you are on index `i` on the current row, you may move to either index `i` or index `i + 1` on the next row.
+
+
+
+**Example:**
+
+- Input: `triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]`
+
+- Output: `11`
+
+- Explanation: The triangle looks like:
+
+  ```
+     2
+    3 4
+   6 5 7
+  4 1 8 3
+  ```
+
+  The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
+
+
+
+### Approach 1: Use DP on the given triangle
+
+The idea is to compute the intermediary path sum from the top to the bottom row:
+
+- if the cell has no left neighbor, it can take the path value only from its right predecessor.
+- if the cell has no right neighbor, it can take the path value only from its left predecessor.
+- otherwise, take the lowest path value from its predecessors. 
+
+
+
+![120_1](README.assets/120_1_.png)
+
+
+
+```python
+class Solution:
+    def minimumTotal(self, triangle: list[list[int]]) -> int:
+        for i in range(1, len(triangle)):
+            for j in range(i + 1):
+                if j == 0:
+                    triangle[i][j] += triangle[i - 1][j]
+                elif j == i:
+                    triangle[i][j] += triangle[i - 1][j - 1]
+                else:
+                    triangle[i][j] += min(triangle[i - 1][j], triangle[i - 1][j - 1])
+
+        return min(triangle[-1])
+```
+
+Time: O(n)
+
+Space: O(n²) *- including the given array*
+
+
+
+### Approach 2: Use DP on a single row
+
+In this approach we compute the values on a single array instead of the whole triangle grid, and we compute from bottom to top.
+
+The initial array contains the lower row. Therefore each value on the upper row has two predecessors, which simplifies the logic.
+
+At the end of the computation, the first value of the array contains the value of the top cell which by definition, contains the value of the minimum path sum.
+
+
+
+![120_2](README.assets/120_2_.png)
+
+
+
+```python
+class Solution:
+    def minimumTotal(self, triangle: list[list[int]]) -> int:
+        n = len(triangle)
+        buf = triangle[-1].copy()
+        for row_i in range(n - 2, -1, -1):
+            for col_i in range(row_i + 1):
+                buf[col_i] = min(buf[col_i], buf[col_i + 1]) + triangle[row_i][col_i]
+
+        return buf[0]
+```
+
+Time: O(n)
+
+Space: O(n)
