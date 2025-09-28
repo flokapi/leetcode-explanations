@@ -351,8 +351,6 @@ Given an integer `n`, return *an array* `ans` *of length* `n + 1` *such that for
 
   
 
-
-
 ### Approach 1: Count the number of ones for each number
 
 This solution is trivial. However, the time complexity to count the ones depends on the number length, which increases logarithmically.
@@ -519,7 +517,9 @@ For each step, you may move to an adjacent number of the row below. More formall
 
 - Output: `11`
 
-- Explanation: The triangle looks like:
+- Explanation:
+
+  The triangle looks like:
 
   ```
      2
@@ -539,6 +539,8 @@ The idea is to compute the intermediary path sum from the top to the bottom row:
 - if the cell has no left neighbor, it can take the path value only from its right predecessor.
 - if the cell has no right neighbor, it can take the path value only from its left predecessor.
 - otherwise, take the lowest path value from its predecessors. 
+
+The result is the lowest value in the bottom row.
 
 
 
@@ -573,7 +575,7 @@ In this approach we compute the values on a single array instead of the whole tr
 
 The initial array contains the lower row. Therefore each value on the upper row has two predecessors, which simplifies the logic.
 
-At the end of the computation, the first value of the array contains the value of the top cell which by definition, contains the value of the minimum path sum.
+At the end of the computation, the first value of the array represents the top cell which by definition, contains the minimum path sum.
 
 
 
