@@ -158,3 +158,54 @@ class TaskManager:
 Time: O(n log(n))
 
 Space: O(n)
+
+
+
+### Approach 2: Using a balanced BST using Sorted Set
+
+Using a balanced BST, one can not only add efficiently, but also remove efficiently elements while maintaining an order. The `SortedSet` class provides such a data-structure.
+
+
+
+```python
+from sortedcontainers import SortedSet
+
+class TaskManager:
+    def __init__(self, tasks):
+        self.tasks_by_id = {}
+        self.sorted_tasks = SortedSet()
+        
+        for task in tasks:
+            self.add(*task)
+
+    def add(self, user_id, task_id, priority):
+        t = (-priority, -task_id, user_id)
+        self.sorted_tasks.add(t)
+        self.tasks_by_id[task_id] = t
+
+    def edit(self, task_id, new_priority):
+        old_task = self.tasks_by_id[task_id]
+        _, _, userId = old_task
+        new_task = (-new_priority, -task_id, userId)
+        self.sorted_tasks.remove(old_task)
+        self.sorted_tasks.add(new_task)
+        self.tasks_by_id[task_id] = new_task
+
+    def rmv(self, task_id):
+        task = self.tasks_by_id[task_id]
+        self.sorted_tasks.remove(task)
+        del self.tasks_by_id[task_id]
+        
+    def execTop(self):
+        if not self.sorted_tasks:
+            return -1
+        
+        _, n_task_id, user_id = self.sorted_tasks.pop(0)
+        task_id = -n_task_id
+        self.tasks_by_id.pop(task_id)
+        return user_id
+```
+
+Time: O(n log(n))
+
+Space: O(n)
